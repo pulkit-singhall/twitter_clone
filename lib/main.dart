@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:twitter_clone/features/auth/ui/loginUi.dart';
+import 'package:twitter_clone/theme/theme.dart';
 
 void main(){
   runApp(const MyApp());
@@ -11,12 +13,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.light,
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-
-      ),
-      home: const Scaffold(),
+      title: 'Twitter Clone',
+      themeMode: ThemeMode.dark,
+      theme: AppTheme.theme,
+      home: const LoginUi(),
     );
   }
 }
