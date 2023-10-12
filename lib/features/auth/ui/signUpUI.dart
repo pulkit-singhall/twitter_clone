@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:twitter_clone/common/common_ui.dart';
+import 'package:twitter_clone/features/auth/ui/loginUI.dart';
 import 'package:twitter_clone/features/auth/widgets/authtextfield.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 
-class LoginUi extends StatefulWidget {
-  const LoginUi({super.key});
+class SignUpUI extends StatefulWidget {
+  const SignUpUI({super.key});
 
   @override
-  State<LoginUi> createState() => _LoginUiState();
+  State<SignUpUI> createState() => _SignUpUIState();
 }
 
-class _LoginUiState extends State<LoginUi> {
+class _SignUpUIState extends State<SignUpUI> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   final appBar = UICommon.reusableAppBar();
@@ -71,7 +72,11 @@ class _LoginUiState extends State<LoginUi> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return const LoginUI();
+                        }));
+                      },
                       child: const Text(
                         'Login',
                         style: TextStyle(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:twitter_clone/features/auth/ui/loginUi.dart';
+import 'package:twitter_clone/features/auth/ui/signUpUI.dart';
 import 'package:twitter_clone/theme/theme.dart';
 
 void main(){
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Twitter Clone',
       themeMode: ThemeMode.dark,
       theme: AppTheme.theme,
-      home: const LoginUi(),
+      home: const SignUpUI(),
     );
   }
 }
