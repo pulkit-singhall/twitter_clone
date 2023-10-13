@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:twitter_clone/common/common_ui.dart';
-import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
-import 'package:twitter_clone/features/auth/ui/loginUI.dart';
-import 'package:twitter_clone/features/auth/widgets/authtextfield.dart';
-import 'package:twitter_clone/theme/theme.dart';
+import '../../../common/common_ui.dart';
+import '../../../theme/theme.dart';
+import '../widgets/authtextfield.dart';
 
-class SignUpUI extends ConsumerStatefulWidget {
-  const SignUpUI({super.key});
+class LoginUI extends StatefulWidget {
+  const LoginUI({super.key});
 
   @override
-  ConsumerState<SignUpUI> createState() => _SignUpUIState();
+  State<LoginUI> createState() => _LoginUIState();
 }
 
-class _SignUpUIState extends ConsumerState<SignUpUI> {
+class _LoginUIState extends State<LoginUI> {
+
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   final appBar = UICommon.reusableAppBar();
 
   @override
   Widget build(BuildContext context) {
-    final authController = ref.watch(authControllerProvider.notifier);
-
     return Scaffold(
       appBar: appBar,
       body: Center(
@@ -42,19 +38,16 @@ class _SignUpUIState extends ConsumerState<SignUpUI> {
             ElevatedButton(
               onPressed: () {
                 // navigate and signup
-                authController.signUp(
-                    email: email.text.toString(),
-                    password: password.text.toString());
               },
               style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all<Color>(Pallete.whiteColor),
+                MaterialStateProperty.all<Color>(Pallete.whiteColor),
                 shape: MaterialStateProperty.all<OutlinedBorder>(
                     const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(22)),
-                )),
+                      borderRadius: BorderRadius.all(Radius.circular(22)),
+                    )),
                 minimumSize:
-                    MaterialStateProperty.all<Size>(const Size(80, 40)),
+                MaterialStateProperty.all<Size>(const Size(80, 40)),
                 elevation: MaterialStateProperty.all(0),
               ),
               child: const Text(
@@ -75,18 +68,15 @@ class _SignUpUIState extends ConsumerState<SignUpUI> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    'Already have an account?',
+                    'Dont have an account?',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   TextButton(
                       onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const LoginUI();
-                        }));
+                        Navigator.pop(context);
                       },
                       child: const Text(
-                        'Login',
+                        'Sign Up',
                         style: TextStyle(
                           color: Pallete.blueColor,
                           fontSize: 16,
