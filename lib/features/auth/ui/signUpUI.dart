@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:twitter_clone/common/routes.dart';
 import 'package:twitter_clone/common/common_ui.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 import 'package:twitter_clone/features/auth/ui/loginUI.dart';
@@ -21,10 +22,11 @@ class _SignUpUIState extends ConsumerState<SignUpUI> {
   @override
   Widget build(BuildContext context) {
     final authController = ref.watch(authControllerProvider.notifier);
+    final isLoading = ref.watch(authControllerProvider);
 
     return Scaffold(
       appBar: appBar,
-      body: Center(
+      body: isLoading ? UICommon.progressIndicator() : Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -44,17 +46,18 @@ class _SignUpUIState extends ConsumerState<SignUpUI> {
                 // navigate and signup
                 authController.signUp(
                     email: email.text.toString(),
-                    password: password.text.toString());
+                    password: password.text.toString(),
+                context: context);
               },
               style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all<Color>(Pallete.whiteColor),
+                MaterialStateProperty.all<Color>(Pallete.whiteColor),
                 shape: MaterialStateProperty.all<OutlinedBorder>(
                     const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(22)),
-                )),
+                      borderRadius: BorderRadius.all(Radius.circular(22)),
+                    )),
                 minimumSize:
-                    MaterialStateProperty.all<Size>(const Size(80, 40)),
+                MaterialStateProperty.all<Size>(const Size(80, 40)),
                 elevation: MaterialStateProperty.all(0),
               ),
               child: const Text(
@@ -80,10 +83,7 @@ class _SignUpUIState extends ConsumerState<SignUpUI> {
                   ),
                   TextButton(
                       onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const LoginUI();
-                        }));
+                        Navigator.push(context, Routes.loginRoute());
                       },
                       child: const Text(
                         'Login',

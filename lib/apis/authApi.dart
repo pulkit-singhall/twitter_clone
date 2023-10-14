@@ -18,8 +18,16 @@ final authApiProvider = Provider((ref) {
 
 abstract class IAuthAPI {
   // here we will just write the snippet of functions used in auth
+  // signup
   FutureEither<model.User> signUp(
       {required String email, required String password});
+
+  // login
+  FutureEither<model.Session> login(
+      {required String email, required String password});
+
+  // get user instance
+  Future<model.User?> getUserInstance();
 }
 
 class AuthAPI implements IAuthAPI {
@@ -39,6 +47,34 @@ class AuthAPI implements IAuthAPI {
           Failure(message: e.message.toString(), stackTrace: stackTrace));
     } catch (e, stackTrace) {
       return left(Failure(message: e.toString(), stackTrace: stackTrace));
+    }
+  }
+
+  @override
+  FutureEither<model.Session> login({required String email, required String password}) async {
+    try{
+      final userSession = await account.createEmailSession(email: email, password: password);
+      return right(userSession);
+    }
+    on AppwriteException catch(e, stackTrace){
+      return left(Failure(message: e.message.toString(), stackTrace: stackTrace));
+    }
+    catch(e, stackTrace){
+      return left(Failure(message: e.toString(), stackTrace: stackTrace));
+    }
+  }
+
+  @override
+  Future<model.User?> getUserInstance() async {
+    try{
+      final userInstance = await account.get();
+      return userInstance;
+    }
+    on AppwriteException catch(e){
+      return null;
+    }
+    catch(e){
+      return null;
     }
   }
 }

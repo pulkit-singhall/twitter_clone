@@ -3,7 +3,18 @@ import 'package:flutter_svg/svg.dart';
 import '../theme/theme.dart';
 import '../constants/constants.dart';
 
-class UICommon{
+class UICommon {
+
+  static Center progressIndicator() {
+    return const Center(
+      child: RefreshProgressIndicator(
+        color: Pallete.blueColor,
+        backgroundColor: Pallete.backgroundColor,
+        strokeWidth: 3,
+      ),
+    );
+  }
+
   static AppBar reusableAppBar() {
     return AppBar(
       centerTitle: true,
@@ -15,4 +26,5 @@ class UICommon{
       ),
     );
   }
+
 }
