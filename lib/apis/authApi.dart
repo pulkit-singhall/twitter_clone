@@ -28,6 +28,8 @@ abstract class IAuthAPI {
 
   // get user instance
   Future<model.User?> getUserInstance();
+
+
 }
 
 class AuthAPI implements IAuthAPI {

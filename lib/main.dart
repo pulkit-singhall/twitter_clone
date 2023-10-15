@@ -5,7 +5,7 @@ import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 import 'package:twitter_clone/features/auth/ui/signUpUI.dart';
 import 'package:twitter_clone/features/home/ui/homeUI.dart';
 import 'package:twitter_clone/theme/theme.dart';
-import 'package:appwrite/models.dart' as model;
+
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));

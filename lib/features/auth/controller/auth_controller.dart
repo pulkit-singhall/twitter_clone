@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/common/routes.dart';
-import 'package:twitter_clone/core/core.dart';
 import 'package:appwrite/models.dart' as model;
 import '../../../apis/authApi.dart';
 
@@ -15,7 +14,8 @@ final authControllerProvider =
 // user instance provider
 final userInstanceProvider = FutureProvider((ref) {
   final authController = ref.watch(authControllerProvider.notifier);
-  return authController.getUserInstance();
+  final userInstance = authController.getUserInstance();
+  return userInstance;
 });
 
 class AuthController extends StateNotifier<bool> {
