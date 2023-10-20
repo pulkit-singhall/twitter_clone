@@ -1,12 +1,19 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:twitter_clone/constants/appwrite_constants.dart';
 import 'package:twitter_clone/core/core.dart';
 import 'package:twitter_clone/models/user_model.dart';
-import '../core/typedefs.dart';
+
+// user api provider
+final userApiProvider = Provider((ref) {
+  final appWriteDatabase = ref.watch(appWriteDatabaseProvider);
+  return UserAPI(database: appWriteDatabase);
+});
 
 abstract class IUserAPI {
-  FutureEither<int> storeUserData({required UserModel user});
+  // storing user data in the database
+  FutureEither<void> storeUserData({required UserModel user});
 }
 
 class UserAPI implements IUserAPI {
@@ -14,14 +21,14 @@ class UserAPI implements IUserAPI {
   UserAPI({required this.database});
 
   @override
-  FutureEither<int> storeUserData({required UserModel user}) async {
+  FutureEither<void> storeUserData({required UserModel user}) async {
     try {
       await database.createDocument(
-          databaseId: AppWriteConstants.databaseId,
+          databaseId: AppWriteConstants.projectDatabaseId,
           collectionId: AppWriteConstants.userCollectionId,
           documentId: ID.unique(),
           data: user.toMap());
-      return const Right(0);
+      return right(null);
     } on AppwriteException catch (e, st) {
       return left(Failure(message: e.message.toString(), stackTrace: st));
     } catch (e, st) {

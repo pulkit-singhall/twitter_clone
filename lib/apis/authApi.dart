@@ -4,7 +4,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:twitter_clone/core/core.dart';
 import 'package:appwrite/models.dart' as model;
 
-// api provider for controller
+// auth api provider
 final authApiProvider = Provider((ref) {
   final appWriteAccount = ref.watch(appWriteAccountProvider);
   return AuthAPI(account: appWriteAccount);

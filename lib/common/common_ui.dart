@@ -4,7 +4,6 @@ import '../theme/theme.dart';
 import '../constants/constants.dart';
 
 class UICommon {
-
   static Center progressIndicator() {
     return const Center(
       child: RefreshProgressIndicator(
@@ -27,4 +26,12 @@ class UICommon {
     );
   }
 
+  static Widget bottomItem(String path, double height, double width, Color color) {
+    return SvgPicture.asset(
+      path,
+      height: height,
+      width: width,
+      color: color,
+    );
+  }
 }

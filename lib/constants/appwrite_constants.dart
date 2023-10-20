@@ -3,7 +3,7 @@ class AppWriteConstants{
   static const String projectId = '6526b202081c28e6f71b';
 
   // databases
-  static const String databaseId = '652c112eb343f9abd434';
+  static const String projectDatabaseId = '652c112eb343f9abd434';
 
   // collections
   static const String userCollectionId = '652c11bb3addb134469b';
