@@ -25,12 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          // tweet action
+          // tweet screen navigation
           Navigator.push(context, Routes.newTweetRoute());
         },
         backgroundColor: Pallete.blueColor,
         elevation: 3,
-        child: const Icon(Icons.add, color: Pallete.whiteColor, size: 30,),
+        child: const Icon(Icons.add, color: Pallete.whiteColor, size: 35, ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Pallete.backgroundColor,
