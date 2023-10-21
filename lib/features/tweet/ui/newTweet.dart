@@ -16,7 +16,7 @@ class _TweetState extends ConsumerState<NewTweet> {
 
   @override
   Widget build(BuildContext context) {
-    final currentUserModel = ref.watch(currentUserModelProvider);
+    final currentUserModel = ref.watch(currentUserModelProvider).value;
 
     return Scaffold(
       appBar: AppBar(
@@ -54,38 +54,31 @@ class _TweetState extends ConsumerState<NewTweet> {
           ),
         ],
       ),
-      body: currentUserModel.when(data: (userModel){
-        final imageUrl = userModel == null ? '' : userModel.profilePic;
-        return Column(
-          children: [
-            Row(
+      body: currentUserModel == null
+          ? UICommon.progressIndicator()
+          : Column(
               children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    imageUrl,
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Expanded(
-                  child: TextField(
-                    controller: tweet,
-                    minLines: 5,
-                    maxLines: 10,
-                  ),
+                Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        currentUserModel.profilePic,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: tweet,
+                        minLines: 5,
+                        maxLines: 10,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        );
-      }, error: (e,st){
-        return Center(
-          child: Text(e.toString()),
-        );
-      }, loading: (){
-        return UICommon.reusableAppBar();
-      }),
     );
   }
 }
