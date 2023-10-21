@@ -21,11 +21,27 @@ final userInstanceProvider = FutureProvider((ref) {
   return userInstance;
 });
 
+// user Model provider
+final userModelProvider = FutureProvider.family((ref, String uid) {
+  final authController = ref.watch(authControllerProvider.notifier);
+  final userModel = authController.retrieveUserData(uid: uid);
+  return userModel;
+});
+
+// current user Model provider
+final currentUserModelProvider = FutureProvider((ref) {
+  final userInstance = ref.watch(userInstanceProvider).value!;
+  final uid = userInstance.$id;
+  final currentUserModel = ref.watch(userModelProvider(uid));
+  return currentUserModel;
+});
+
 class AuthController extends StateNotifier<bool> {
   final AuthAPI authApi;
   final UserAPI userApi;
 
   AuthController({required this.authApi, required this.userApi}) : super(false);
+  // bool = isLoading
 
   // signup
   void signUp(
@@ -38,7 +54,8 @@ class AuthController extends StateNotifier<bool> {
     userModel.fold((l) {
       print('Error in SignUp ${l.message}');
     }, (r) async {
-      final userDataStored = await userApi.storeUserData(user: user);
+      final userId = r.$id;
+      final userDataStored = await userApi.storeUserData(user: user, documentId: userId);
       userDataStored.fold((l){
         print('Error in Storing Data ${l.message}');
       }, (r) {
@@ -69,5 +86,12 @@ class AuthController extends StateNotifier<bool> {
   Future<model.User?> getUserInstance() async {
     final userInstance = await authApi.getUserInstance();
     return userInstance;
+  }
+
+  // get user details
+  Future<UserModel> retrieveUserData({required String uid}) async {
+    final userDocument = await userApi.retrieveUserData(uid: uid);
+    final userModel = UserModel.fromMap(userDocument.data);
+    return userModel;
   }
 }

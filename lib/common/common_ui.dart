@@ -26,12 +26,4 @@ class UICommon {
     );
   }
 
-  static Widget bottomItem(String path, double height, double width, Color color) {
-    return SvgPicture.asset(
-      path,
-      height: height,
-      width: width,
-      color: color,
-    );
-  }
 }
