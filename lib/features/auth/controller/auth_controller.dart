@@ -33,7 +33,7 @@ final currentUserModelProvider = FutureProvider((ref) {
   final userInstance = ref.watch(userInstanceProvider).value!;
   final uid = userInstance.$id;
   final currentUserModel = ref.watch(userModelProvider(uid));
-  return currentUserModel;
+  return currentUserModel.value;
 });
 
 class AuthController extends StateNotifier<bool> {
