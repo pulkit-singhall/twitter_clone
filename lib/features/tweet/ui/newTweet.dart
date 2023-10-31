@@ -40,10 +40,13 @@ class _TweetState extends ConsumerState<NewTweet> {
               child: ElevatedButton(
                 onPressed: () {
                   // tweet
+                  if(tweetController.text.toString().isNotEmpty){
+
+                  }
                 },
                 style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Pallete.blueColor),
+                  backgroundColor: tweetController.text.toString().isNotEmpty ?
+                      MaterialStateProperty.all<Color>(Pallete.blueColor) : MaterialStateProperty.all<Color>(Pallete.lightBlueColor),
                   elevation: MaterialStateProperty.all<double>(2),
                   shape: MaterialStateProperty.all<OutlinedBorder>(
                       RoundedRectangleBorder(
@@ -92,6 +95,11 @@ class _TweetState extends ConsumerState<NewTweet> {
                         Expanded(
                           child: TextField(
                             controller: tweetController,
+                            onChanged: (value){
+                              setState(() {
+
+                              });
+                            },
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: 'What\'s Happening?',

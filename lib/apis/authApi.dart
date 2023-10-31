@@ -29,7 +29,8 @@ abstract class IAuthAPI {
   // get user instance
   Future<model.User?> getUserInstance();
 
-
+  // logout user
+  FutureEither<void> logout();
 }
 
 class AuthAPI implements IAuthAPI {
@@ -77,6 +78,20 @@ class AuthAPI implements IAuthAPI {
     }
     catch(e){
       return null;
+    }
+  }
+
+  @override
+  FutureEither<void> logout() async {
+    try{
+      await account.deleteSession(sessionId: 'current');
+      return right(null);
+    }
+    on AppwriteException catch(e, stackTrace){
+      return left(Failure(message: e.message.toString(), stackTrace: stackTrace));
+    }
+    catch(e,stackTrace){
+      return left(Failure(message: e.toString(), stackTrace: stackTrace));
     }
   }
 }
