@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/common/routes.dart';
 import 'package:appwrite/models.dart' as model;
 import 'package:twitter_clone/models/user_model.dart';
-import '../../../apis/authApi.dart';
-import '../../../apis/userApi.dart';
+import '../../../apis/auth_api.dart';
+import '../../../apis/user_api.dart';
 
 // global auth controller provider
 final authControllerProvider =

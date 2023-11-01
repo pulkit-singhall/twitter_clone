@@ -7,5 +7,6 @@ class AppWriteConstants{
 
   // collections
   static const String userCollectionId = '652c11bb3addb134469b';
+  static const String tweetCollectionId = '65426d48351fdb347d5a';
 
 }
