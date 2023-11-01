@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/constants/assets_constants.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
+import 'package:twitter_clone/features/tweet/controller/tweet_controller.dart';
 import 'package:twitter_clone/features/tweet/widgets/publicView.dart';
 import 'package:twitter_clone/theme/theme.dart';
 
@@ -15,11 +16,12 @@ class NewTweet extends ConsumerStatefulWidget {
 }
 
 class _TweetState extends ConsumerState<NewTweet> {
-  TextEditingController tweetController = TextEditingController();
+  TextEditingController tweetTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final currentUserModel = ref.watch(currentUserModelProvider).value;
+    final tweetController = ref.watch(tweetControllerProvider.notifier);
 
     return SafeArea(
       child: Scaffold(
@@ -40,13 +42,18 @@ class _TweetState extends ConsumerState<NewTweet> {
               child: ElevatedButton(
                 onPressed: () {
                   // tweet
-                  if(tweetController.text.toString().isNotEmpty){
-
+                  if (tweetTextController.text.toString().isNotEmpty) {
+                    tweetController.shareTweet(
+                        tweetText: tweetTextController.text.toString(),
+                        context: context);
                   }
                 },
                 style: ButtonStyle(
-                  backgroundColor: tweetController.text.toString().isNotEmpty ?
-                      MaterialStateProperty.all<Color>(Pallete.blueColor) : MaterialStateProperty.all<Color>(Pallete.lightBlueColor),
+                  backgroundColor:
+                      tweetTextController.text.toString().isNotEmpty
+                          ? MaterialStateProperty.all<Color>(Pallete.blueColor)
+                          : MaterialStateProperty.all<Color>(
+                              Pallete.lightBlueColor),
                   elevation: MaterialStateProperty.all<double>(2),
                   shape: MaterialStateProperty.all<OutlinedBorder>(
                       RoundedRectangleBorder(
@@ -94,11 +101,9 @@ class _TweetState extends ConsumerState<NewTweet> {
                         ),
                         Expanded(
                           child: TextField(
-                            controller: tweetController,
-                            onChanged: (value){
-                              setState(() {
-
-                              });
+                            controller: tweetTextController,
+                            onChanged: (value) {
+                              setState(() {});
                             },
                             decoration: const InputDecoration(
                               border: InputBorder.none,
@@ -107,6 +112,10 @@ class _TweetState extends ConsumerState<NewTweet> {
                                 color: Pallete.greyColor,
                                 fontSize: 22,
                               ),
+                            ),
+                            style: const TextStyle(
+                              color: Pallete.whiteColor,
+                              fontSize: 22,
                             ),
                             minLines: 1,
                             maxLines: null,

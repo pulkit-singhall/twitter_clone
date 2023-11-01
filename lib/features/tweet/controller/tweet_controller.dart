@@ -1,19 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:twitter_clone/apis/tweet_api.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 import 'package:twitter_clone/models/tweet_model.dart';
 
 // global tweet controller provider
 final tweetControllerProvider = StateNotifierProvider<TweetController, bool>((ref) {
-  return TweetController(ref: ref);
+  final tweetApi = ref.watch(tweetApiProvider);
+  return TweetController(ref: ref, tweetApi: tweetApi);
 });
 
 class TweetController extends StateNotifier<bool> {
   final Ref ref;
-  TweetController({required this.ref}) : super(false);
+  final TweetApi tweetApi;
+  TweetController({required this.ref, required this.tweetApi}) : super(false);
 
   // tweet share action
-  void shareTweet({required String tweetText, required BuildContext context}) {
+  void shareTweet({required String tweetText, required BuildContext context}) async {
     List<String> links = _getLinksFromTweet(tweetText);
     List<String> hashTags = _getHashTagsFromTweet(tweetText);
     final userInstance = ref.watch(userInstanceProvider).value!;
@@ -28,7 +31,14 @@ class TweetController extends StateNotifier<bool> {
         tweetTime: DateTime.now(),
         text: tweetText,
         reshareCount: 0);
-
+    state = true;
+    final res = await tweetApi.shareTweet(tweetModel: tweetModel);
+    res.fold((l) {
+      print('error in sharing tweet ${l.message}');
+    }, (r) {
+      state = false;
+      Navigator.pop(context);
+    });
   }
 
   // getting hashtags from the tweet
