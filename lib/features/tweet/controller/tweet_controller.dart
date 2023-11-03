@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/apis/tweet_api.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
@@ -10,12 +11,28 @@ final tweetControllerProvider = StateNotifierProvider<TweetController, bool>((re
   return TweetController(ref: ref, tweetApi: tweetApi);
 });
 
+// future provider for tweets list
+final tweetListFutureProvider = FutureProvider((ref) {
+  final tweetController = ref.watch(tweetControllerProvider.notifier);
+  return tweetController.getTweets();
+});
+
 class TweetController extends StateNotifier<bool> {
   final Ref ref;
   final TweetApi tweetApi;
   TweetController({required this.ref, required this.tweetApi}) : super(false);
 
-  // tweet share action
+  // getting tweets list
+  Future<List<TweetModel>> getTweets() async {
+    List<TweetModel> tweets = [];
+    final tweetDocumentList = await tweetApi.getTweets();
+    for(var tweet in tweetDocumentList){
+      tweets.add(TweetModel.fromMap(tweet.data));
+    }
+    return tweets;
+  }
+
+  // tweet share/store action
   void shareTweet({required String tweetText, required BuildContext context}) async {
     List<String> links = _getLinksFromTweet(tweetText);
     List<String> hashTags = _getHashTagsFromTweet(tweetText);
@@ -37,6 +54,7 @@ class TweetController extends StateNotifier<bool> {
       print('error in sharing tweet ${l.message}');
     }, (r) {
       state = false;
+      print('Tweet Share Success');
       Navigator.pop(context);
     });
   }

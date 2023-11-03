@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/constants/constants.dart';
 import 'package:twitter_clone/features/home/widgets/bottomItem.dart';
+import 'package:twitter_clone/features/home/widgets/feed_page.dart';
+import 'package:twitter_clone/features/home/widgets/notification_page.dart';
+import 'package:twitter_clone/features/home/widgets/search_page.dart';
 import 'package:twitter_clone/theme/theme.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentPage = 0;
-  List<Widget> homeWidgets = const [];
+  List<Widget> homeWidgets = const [FeedPage(), SearchPage(), NotificationPage()];
 
   @override
   Widget build(BuildContext context) {

@@ -22,6 +22,7 @@ class _TweetState extends ConsumerState<NewTweet> {
   Widget build(BuildContext context) {
     final currentUserModel = ref.watch(currentUserModelProvider).value;
     final tweetController = ref.watch(tweetControllerProvider.notifier);
+    final isLoading = ref.watch(tweetControllerProvider);
 
     return SafeArea(
       child: Scaffold(
@@ -71,8 +72,8 @@ class _TweetState extends ConsumerState<NewTweet> {
             ),
           ],
         ),
-        body: currentUserModel == null
-            ? UICommon.reusableAppBar()
+        body: currentUserModel == null || isLoading
+            ? UICommon.progressIndicator()
             : Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(

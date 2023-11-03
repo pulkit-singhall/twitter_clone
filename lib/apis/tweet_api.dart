@@ -4,27 +4,30 @@ import 'package:fpdart/fpdart.dart';
 import 'package:twitter_clone/constants/appwrite_constants.dart';
 import 'package:twitter_clone/core/core.dart';
 import 'package:twitter_clone/models/tweet_model.dart';
+import 'package:appwrite/models.dart' as model;
 
 // global tweet api provider
 final tweetApiProvider = Provider((ref) {
   final appwriteDatabase = ref.watch(appWriteDatabaseProvider);
-  return TweetApi(databases: appwriteDatabase);
+  return TweetApi(database: appwriteDatabase);
 });
 
-abstract class ITweetApi {
-
+abstract class ITweetAPI {
   // share/store tweet
   FutureEither<void> shareTweet({required TweetModel tweetModel});
+
+  // get tweets
+  Future<List<model.Document>> getTweets();
 }
 
-class TweetApi implements ITweetApi {
-  final Databases databases;
-  TweetApi({required this.databases});
+class TweetApi implements ITweetAPI {
+  final Databases database;
+  TweetApi({required this.database});
 
   @override
   FutureEither<void> shareTweet({required TweetModel tweetModel}) async {
     try {
-      await databases.createDocument(
+      await database.createDocument(
           databaseId: AppWriteConstants.projectDatabaseId,
           collectionId: AppWriteConstants.tweetCollectionId,
           documentId: ID.unique(),
@@ -35,5 +38,13 @@ class TweetApi implements ITweetApi {
     } catch (e, st) {
       return left(Failure(message: e.toString(), stackTrace: st));
     }
+  }
+
+  @override
+  Future<List<model.Document>> getTweets() async {
+    final tweetDocumentList = await database.listDocuments(
+        databaseId: AppWriteConstants.projectDatabaseId,
+        collectionId: AppWriteConstants.tweetCollectionId);
+    return tweetDocumentList.documents;
   }
 }
