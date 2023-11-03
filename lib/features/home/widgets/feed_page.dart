@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/common/common.dart';
+import 'package:twitter_clone/features/home/widgets/tweet_card.dart';
 import 'package:twitter_clone/features/tweet/controller/tweet_controller.dart';
 
 class FeedPage extends ConsumerStatefulWidget {
@@ -21,7 +22,9 @@ class _FeedPageState extends ConsumerState<FeedPage> {
           itemCount: tweetModelList.length,
           itemBuilder: (context, index) {
             final tweetModel = tweetModelList[index];
-            return Text(tweetModel.text);
+            return TweetCard(
+              tweet: tweetModel,
+            );
           });
     }, error: (e, st) {
       return Center(
