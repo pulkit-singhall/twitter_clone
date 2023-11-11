@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/constants/assets_constants.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 import 'package:twitter_clone/features/home/widgets/bottomItem.dart';
+import 'package:twitter_clone/features/home/widgets/tweet_text.dart';
 import 'package:twitter_clone/models/tweet_model.dart';
 import 'package:twitter_clone/theme/theme.dart';
 
@@ -48,6 +49,16 @@ class _TweetCardState extends ConsumerState<TweetCard> {
                     fontWeight: FontWeight.bold),
                 maxLines: 1,
               ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                '@$name',
+                style: const TextStyle(
+                  color: Pallete.greyColor,
+                  fontSize: 20,
+                ),
+              ),
             ],
           ),
           Row(
@@ -55,11 +66,7 @@ class _TweetCardState extends ConsumerState<TweetCard> {
               const SizedBox(
                 width: 59,
               ),
-              Text(
-                text,
-                style: const TextStyle(color: Pallete.whiteColor, fontSize: 20),
-                maxLines: null,
-              ),
+              Expanded(child: TweetText(text: text)),
             ],
           ),
           const SizedBox(
