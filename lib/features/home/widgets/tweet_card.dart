@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/constants/assets_constants.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 import 'package:twitter_clone/features/home/widgets/bottomItem.dart';
+import 'package:twitter_clone/features/home/widgets/tweet_actions.dart';
 import 'package:twitter_clone/features/home/widgets/tweet_text.dart';
 import 'package:twitter_clone/models/tweet_model.dart';
 import 'package:twitter_clone/theme/theme.dart';
@@ -21,6 +22,9 @@ class _TweetCardState extends ConsumerState<TweetCard> {
   Widget build(BuildContext context) {
     final String text = widget.tweet.text;
     final String userId = widget.tweet.userId;
+    final int likeNumber = widget.tweet.likes.length;
+    final int commentNumber = widget.tweet.comments.length;
+    final int reshareNumber = widget.tweet.reshareCount;
 
     final currentUserModel = ref.watch(userModelProvider(userId)).value!;
     final String profilePic = currentUserModel.profilePic;
@@ -53,7 +57,7 @@ class _TweetCardState extends ConsumerState<TweetCard> {
                 width: 10,
               ),
               Text(
-                '@$name',
+                '@$name'.toLowerCase(),
                 style: const TextStyle(
                   color: Pallete.greyColor,
                   fontSize: 20,
@@ -72,27 +76,27 @@ class _TweetCardState extends ConsumerState<TweetCard> {
           const SizedBox(
             height: 25,
           ),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              BottomItem(
-                  height: 22,
-                  width: 22,
-                  color: Pallete.greyColor,
-                  path: AssetsConstants.commentIcon),
-              BottomItem(
-                  height: 22,
-                  width: 22,
-                  color: Pallete.greyColor,
-                  path: AssetsConstants.retweetIcon),
-              BottomItem(
-                  height: 22,
-                  width: 22,
-                  color: Pallete.greyColor,
-                  path: AssetsConstants.likeOutlinedIcon),
-              BottomItem(
-                  height: 22,
-                  width: 22,
+              TweetActionButton(
+                number: commentNumber.toString(),
+                path: AssetsConstants.commentIcon,
+                onTap: () {},
+              ),
+              TweetActionButton(
+                number: reshareNumber.toString(),
+                path: AssetsConstants.retweetIcon,
+                onTap: () {},
+              ),
+              TweetActionButton(
+                number: likeNumber.toString(),
+                path: AssetsConstants.likeOutlinedIcon,
+                onTap: () {},
+              ),
+              const BottomItem(
+                  height: 25,
+                  width: 25,
                   color: Pallete.greyColor,
                   path: AssetsConstants.viewsIcon),
             ],
