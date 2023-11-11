@@ -57,26 +57,65 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         backgroundColor: Pallete.backgroundColor,
         elevation: 3,
         child: SafeArea(
-          child: Column(
-            children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(profilePic),
-                radius: 25,
-              ),
-              Text(
-                name,
-                style: const TextStyle(color: Pallete.whiteColor, fontSize: 20),
-              ),
-              Text(
-                '@$name',
-                style: const TextStyle(color: Pallete.greyColor, fontSize: 18),
-              ),
-              Row(
-                children: [
-
-                ],
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(profilePic),
+                    radius: 25,
+                  ),
+                  onTap: (){
+                    // navigate to profile page
+                  },
+                ),
+                const SizedBox(height: 8,),
+                Text(
+                  name,
+                  style: const TextStyle(
+                      color: Pallete.whiteColor,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 3,),
+                Text(
+                  '@$name',
+                  style: const TextStyle(color: Pallete.greyColor, fontSize: 18),
+                ),
+                const SizedBox(height: 18,),
+                Row(
+                  children: [
+                    Text(
+                      following.toString(),
+                      style: const TextStyle(
+                          color: Pallete.whiteColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    ),
+                    const SizedBox(width: 4,),
+                    const Text(
+                      'Following',
+                      style: TextStyle(color: Pallete.greyColor, fontSize: 18),
+                    ),
+                    const SizedBox(width: 10,),
+                    Text(
+                      followers.toString(),
+                      style: const TextStyle(
+                          color: Pallete.whiteColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    ),
+                    const SizedBox(width: 4,),
+                    const Text(
+                      'Followers',
+                      style: TextStyle(color: Pallete.greyColor, fontSize: 18),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
