@@ -67,11 +67,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     backgroundImage: NetworkImage(profilePic),
                     radius: 25,
                   ),
-                  onTap: (){
+                  onTap: () {
                     // navigate to profile page
+                    Navigator.push(context, Routes.profilePageRoute());
                   },
                 ),
-                const SizedBox(height: 8,),
+                const SizedBox(
+                  height: 8,
+                ),
                 Text(
                   name,
                   style: const TextStyle(
@@ -79,12 +82,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       fontSize: 22,
                       fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 3,),
+                const SizedBox(
+                  height: 3,
+                ),
                 Text(
                   '@$name',
-                  style: const TextStyle(color: Pallete.greyColor, fontSize: 18),
+                  style:
+                      const TextStyle(color: Pallete.greyColor, fontSize: 18),
                 ),
-                const SizedBox(height: 18,),
+                const SizedBox(
+                  height: 18,
+                ),
                 Row(
                   children: [
                     Text(
@@ -94,12 +102,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     ),
-                    const SizedBox(width: 4,),
+                    const SizedBox(
+                      width: 4,
+                    ),
                     const Text(
                       'Following',
                       style: TextStyle(color: Pallete.greyColor, fontSize: 18),
                     ),
-                    const SizedBox(width: 10,),
+                    const SizedBox(
+                      width: 10,
+                    ),
                     Text(
                       followers.toString(),
                       style: const TextStyle(
@@ -107,13 +119,43 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     ),
-                    const SizedBox(width: 4,),
+                    const SizedBox(
+                      width: 4,
+                    ),
                     const Text(
                       'Followers',
                       style: TextStyle(color: Pallete.greyColor, fontSize: 18),
                     ),
                   ],
                 ),
+                const SizedBox(
+                  height: 40,
+                ),
+                GestureDetector(
+                  child: const Text(
+                    'Profile',
+                    style: TextStyle(
+                        color: Pallete.whiteColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24),
+                  ),
+                  onTap: () {
+                    Navigator.push(context, Routes.profilePageRoute());
+                  },
+                ),
+                const Spacer(),
+                Center(
+                    child: ElevatedButton(
+                        onPressed: () {
+                          // logout action
+                          // here
+                          Navigator.pushReplacement(context, Routes.signUpRoute());
+                        },
+                        child: const Text(
+                          'Logout',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        )))
               ],
             ),
           ),
