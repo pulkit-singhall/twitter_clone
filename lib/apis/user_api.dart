@@ -19,6 +19,12 @@ abstract class IUserAPI {
 
   // retrieving user data
   Future<model.Document> retrieveUserData({required String uid});
+
+  // retrieving all the users documents from the database
+  Future<List<model.Document>> getAllUsers();
+
+  // get all users by searching a particular name
+  Future<List<model.Document>> getUsersByName(String name);
 }
 
 class UserAPI implements IUserAPI {
@@ -49,5 +55,24 @@ class UserAPI implements IUserAPI {
         collectionId: AppWriteConstants.userCollectionId,
         documentId: uid);
     return userDocument;
+  }
+
+  @override
+  Future<List<model.Document>> getAllUsers() async {
+    final userDocumentsList = await database.listDocuments(
+        databaseId: AppWriteConstants.projectDatabaseId,
+        collectionId: AppWriteConstants.userCollectionId);
+    return userDocumentsList.documents;
+  }
+
+  @override
+  Future<List<model.Document>> getUsersByName(String name) async {
+    final userByName = await database.listDocuments(
+        databaseId: AppWriteConstants.projectDatabaseId,
+        collectionId: AppWriteConstants.userCollectionId,
+    queries: [
+      Query.search('name', name),
+    ]);
+    return userByName.documents;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/common/common.dart';
+import 'package:twitter_clone/features/home/controller/home_controller.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 
 class SearchPage extends ConsumerStatefulWidget {
@@ -11,12 +12,15 @@ class SearchPage extends ConsumerStatefulWidget {
 }
 
 class _SearchPageState extends ConsumerState<SearchPage> {
-
   // search controller
   TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    // list of users by search
+    final usersListBySearch =
+        ref.watch(userListBySearchProvider(searchController.toString()));
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 55,
@@ -32,6 +36,9 @@ class _SearchPageState extends ConsumerState<SearchPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextField(
+                onChanged: (value) {
+                  setState(() {});
+                },
                 controller: searchController,
                 maxLines: 1,
                 minLines: 1,
@@ -50,6 +57,22 @@ class _SearchPageState extends ConsumerState<SearchPage> {
           ),
         ),
       ),
+      body: usersListBySearch.when(data: (userListBySearch){
+        return ListView.builder(
+          itemCount: userListBySearch.length,
+            itemBuilder: (context, index){
+              final user = userListBySearch[index];
+              return Center(
+                child: Text(user.name.toString()),
+              );
+            });
+      }, error: (e,st){
+        return Center(
+          child: Text(e.toString()),
+        );
+      }, loading: (){
+        return UICommon.progressIndicator();
+      }),
     );
   }
 }
