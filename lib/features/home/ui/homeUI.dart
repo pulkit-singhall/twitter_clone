@@ -7,7 +7,6 @@ import 'package:twitter_clone/features/home/widgets/bottomItem.dart';
 import 'package:twitter_clone/features/home/widgets/feed_page.dart';
 import 'package:twitter_clone/features/home/widgets/notification_page.dart';
 import 'package:twitter_clone/features/home/widgets/search_page.dart';
-import 'package:twitter_clone/models/user_model.dart';
 import 'package:twitter_clone/theme/theme.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -37,7 +36,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         final int followers = userModel.followers.length;
         final int following = userModel.following.length;
         return Scaffold(
-          appBar: UICommon.reusableAppBar(),
+          appBar: currentPage == 0 ? UICommon.reusableAppBar() : null,
           body: IndexedStack(
             index: currentPage,
             children: homeWidgets,

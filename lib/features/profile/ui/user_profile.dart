@@ -1,17 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:twitter_clone/common/common.dart';
+import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 
-class UserProfile extends StatefulWidget {
+class UserProfile extends ConsumerStatefulWidget {
   const UserProfile({super.key});
 
   @override
-  State<UserProfile> createState() => _UserProfileState();
+  ConsumerState<UserProfile> createState() => _UserProfileState();
 }
 
-class _UserProfileState extends State<UserProfile> {
+class _UserProfileState extends ConsumerState<UserProfile> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
 
-    );
+    final currentUserModel = ref.watch(currentUserModelProvider);
+
+    Widget userProfile = currentUserModel.when(data: (userModel){
+      if(userModel != null){
+        final profilePic = userModel.profilePic;
+        return Center(
+          child: CircleAvatar(
+            backgroundImage: NetworkImage(profilePic),
+          ),
+        );
+      }
+      else{
+        return UICommon.progressIndicator();
+      }
+    }, error: (e,st){
+      return Center(
+        child: Text(e.toString()),
+      );
+    }, loading: (){
+      return UICommon.progressIndicator();
+    });
+
+    return userProfile;
   }
 }
