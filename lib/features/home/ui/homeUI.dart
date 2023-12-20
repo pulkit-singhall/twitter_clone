@@ -4,9 +4,9 @@ import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/constants/constants.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 import 'package:twitter_clone/features/home/widgets/bottomItem.dart';
-import 'package:twitter_clone/features/home/widgets/feed_page.dart';
-import 'package:twitter_clone/features/home/widgets/notification_page.dart';
-import 'package:twitter_clone/features/home/widgets/search_page.dart';
+import 'package:twitter_clone/features/home/ui/feed_page.dart';
+import 'package:twitter_clone/features/home/ui/notification_page.dart';
+import 'package:twitter_clone/features/home/ui/search_page.dart';
 import 'package:twitter_clone/theme/theme.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -28,6 +28,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final currentUserModel =
         ref.watch(currentUserModelProvider);
+
+    final authController =ref.watch(authControllerProvider.notifier);
 
     Widget homeUI = currentUserModel.when(data: (userModel){
       if(userModel != null){
@@ -148,9 +150,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     Center(
                         child: ElevatedButton(
                             onPressed: () {
-                              // logout action
-                              // here
-                              Navigator.pushReplacement(context, Routes.signUpRoute());
+                              // logout action here
+                              authController.logout(context);
                             },
                             child: const Text(
                               'Logout',

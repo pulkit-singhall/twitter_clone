@@ -94,4 +94,15 @@ class AuthController extends StateNotifier<bool> {
     final userModel = UserModel.fromMap(userDocument.data);
     return userModel;
   }
+
+  // logout
+  Future<void> logout(BuildContext context) async {
+    final userLogout = await authApi.logout();
+    userLogout.fold((l) {
+      print('error in logout${l.message}');
+    }, (r) {
+      print('user logout successfully');
+      Navigator.pushReplacement(context, Routes.signUpRoute());
+    });
+  }
 }

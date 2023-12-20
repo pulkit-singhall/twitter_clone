@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/features/home/controller/home_controller.dart';
+import 'package:twitter_clone/features/home/widgets/searchUser_tile.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 
 class SearchPage extends ConsumerStatefulWidget {
@@ -62,9 +63,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
           itemCount: userListBySearch.length,
             itemBuilder: (context, index){
               final user = userListBySearch[index];
-              return Center(
-                child: Text(user.name.toString()),
-              );
+              return SearchTile(user: user);
             });
       }, error: (e,st){
         return Center(
