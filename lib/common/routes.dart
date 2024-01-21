@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:twitter_clone/features/auth/ui/loginUI.dart';
 import 'package:twitter_clone/features/auth/ui/signUpUI.dart';
 import 'package:twitter_clone/features/home/ui/homeUI.dart';
+import 'package:twitter_clone/features/profile/ui/otherUser_profile.dart';
 import 'package:twitter_clone/features/profile/ui/user_profile.dart';
 import 'package:twitter_clone/features/tweet/ui/newTweet.dart';
+import 'package:twitter_clone/models/user_model.dart';
 
 class Routes {
   // signup
@@ -35,6 +37,12 @@ class Routes {
   static MaterialPageRoute profilePageRoute() {
     return MaterialPageRoute(builder: (context) {
       return const UserProfile();
+    });
+  }
+
+  static MaterialPageRoute otherProfilePageRoute(UserModel user){
+    return MaterialPageRoute(builder: (context){
+      return OtherUserProfile(user: user);
     });
   }
 }

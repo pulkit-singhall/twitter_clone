@@ -58,18 +58,24 @@ class _SearchPageState extends ConsumerState<SearchPage> {
           ),
         ),
       ),
-      body: usersListBySearch.when(data: (userListBySearch){
+      body: usersListBySearch.when(data: (userListBySearch) {
         return ListView.builder(
-          itemCount: userListBySearch.length,
-            itemBuilder: (context, index){
+            itemCount: userListBySearch.length,
+            itemBuilder: (context, index) {
               final user = userListBySearch[index];
-              return SearchTile(user: user);
+              return GestureDetector(
+                child: SearchTile(user: user),
+                onTap: () {
+                  // go to that user
+                  Navigator.push(context, Routes.otherProfilePageRoute(user));
+                },
+              );
             });
-      }, error: (e,st){
+      }, error: (e, st) {
         return Center(
           child: Text(e.toString()),
         );
-      }, loading: (){
+      }, loading: () {
         return UICommon.progressIndicator();
       }),
     );
