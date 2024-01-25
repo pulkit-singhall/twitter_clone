@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
+import 'package:twitter_clone/features/tweet/controller/tweet_controller.dart';
 import 'package:twitter_clone/models/user_model.dart';
 import '../../../theme/theme.dart';
+import '../../home/widgets/tweet_card.dart';
 
 class OtherUserProfile extends ConsumerStatefulWidget {
   final UserModel user;
@@ -15,10 +17,12 @@ class OtherUserProfile extends ConsumerStatefulWidget {
 class _OtherUserProfileState extends ConsumerState<OtherUserProfile> {
   @override
   Widget build(BuildContext context) {
-
     final currentUserModel = ref.watch(currentUserModelProvider).value;
     final currentUserId = currentUserModel?.uid;
     final otherUserId = widget.user.uid;
+
+    final userTweetsList =
+        ref.watch(userTweetsModelListProvider(otherUserId)).value;
 
     return SafeArea(
       child: Scaffold(
@@ -54,7 +58,9 @@ class _OtherUserProfileState extends ConsumerState<OtherUserProfile> {
                                       color: Pallete.greyColor, width: 2))),
                         ),
                         child: Text(
-                          currentUserId == otherUserId ? 'Edit Profile' : 'Follow',
+                          currentUserId == otherUserId
+                              ? 'Edit Profile'
+                              : 'Follow',
                           style: const TextStyle(
                               color: Pallete.whiteColor,
                               fontSize: 20,
@@ -133,7 +139,18 @@ class _OtherUserProfileState extends ConsumerState<OtherUserProfile> {
                 ],
               ),
             ),
-            // tweet list here
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: ListView.builder(
+                  itemBuilder: (context, index) {
+                    final tweet = userTweetsList[index];
+                    return TweetCard(tweet: tweet);
+                  },
+                  itemCount: userTweetsList!.length,
+                ),
+              ),
+            ),
           ],
         ),
       ),
