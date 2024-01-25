@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
+import 'package:twitter_clone/features/home/widgets/tweet_card.dart';
+import 'package:twitter_clone/features/tweet/controller/tweet_controller.dart';
 import 'package:twitter_clone/theme/pallete.dart';
 
 class UserProfile extends ConsumerStatefulWidget {
@@ -23,7 +25,12 @@ class _UserProfileState extends ConsumerState<UserProfile> {
         final bio = userModel.bio;
         final followers = userModel.followers;
         final following = userModel.following;
+        final uid = userModel.uid;
         // final bannerPic = userModel.bannerPic;
+
+        final userTweetsList =
+            ref.watch(userTweetsModelListProvider(uid)).value;
+
         return SafeArea(
           child: Scaffold(
             body: Column(
@@ -45,15 +52,17 @@ class _UserProfileState extends ConsumerState<UserProfile> {
                           ElevatedButton(
                             onPressed: () {
                               // edit user profile
-                              
                             },
                             style: ButtonStyle(
-                              minimumSize: MaterialStateProperty.all<Size>(const Size(100, 50)),
-                              backgroundColor: MaterialStateProperty.all<Color>(Pallete.backgroundColor),
-                              shape: MaterialStateProperty.all<OutlinedBorder>(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25),
-                                side: const BorderSide(color: Pallete.greyColor, width: 2)
-                              )),
+                              minimumSize: MaterialStateProperty.all<Size>(
+                                  const Size(100, 50)),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Pallete.backgroundColor),
+                              shape: MaterialStateProperty.all<OutlinedBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25),
+                                      side: const BorderSide(
+                                          color: Pallete.greyColor, width: 2))),
                             ),
                             child: const Text(
                               'Edit Profile',
@@ -135,7 +144,18 @@ class _UserProfileState extends ConsumerState<UserProfile> {
                     ],
                   ),
                 ),
-                // tweet list here
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        final tweet = userTweetsList[index];
+                        return TweetCard(tweet: tweet);
+                      },
+                      itemCount: userTweetsList!.length,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

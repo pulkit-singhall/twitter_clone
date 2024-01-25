@@ -17,6 +17,12 @@ final tweetListFutureProvider = FutureProvider((ref) {
   return tweetController.getTweets();
 });
 
+// future provider for user only tweets
+final userTweetsModelListProvider = FutureProvider.family((ref, String uid) {
+  final tweetController = ref.watch(tweetControllerProvider.notifier);
+  return tweetController.getUserTweets(uid);
+});
+
 class TweetController extends StateNotifier<bool> {
   final Ref ref;
   final TweetApi tweetApi;
@@ -82,5 +88,15 @@ class TweetController extends StateNotifier<bool> {
       }
     }
     return links;
+  }
+
+  // get user only tweets
+  Future<List<TweetModel>> getUserTweets(String uid) async {
+      final List<TweetModel> userTweetList = [];
+      final userTweets = await tweetApi.getUserTweets(uid);
+      for(var tweets in userTweets){
+        userTweetList.add(TweetModel.fromMap(tweets.data));
+      }
+      return userTweetList;
   }
 }

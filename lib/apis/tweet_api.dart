@@ -18,6 +18,9 @@ abstract class ITweetAPI {
 
   // get tweets
   Future<List<model.Document>> getTweets();
+
+  // get user only tweets
+  Future<List<model.Document>> getUserTweets(String uid);
 }
 
 class TweetApi implements ITweetAPI {
@@ -46,5 +49,16 @@ class TweetApi implements ITweetAPI {
         databaseId: AppWriteConstants.projectDatabaseId,
         collectionId: AppWriteConstants.tweetCollectionId);
     return tweetDocumentList.documents;
+  }
+
+  @override
+  Future<List<model.Document>> getUserTweets(String uid) async {
+    final userTweetList = await database.listDocuments(
+        databaseId: AppWriteConstants.projectDatabaseId,
+        collectionId: AppWriteConstants.tweetCollectionId,
+        queries: [
+          Query.search('userId', uid),
+        ]);
+    return userTweetList.documents;
   }
 }
