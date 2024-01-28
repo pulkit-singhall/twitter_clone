@@ -25,6 +25,12 @@ abstract class IUserAPI {
 
   // get all users by searching a particular name
   Future<List<model.Document>> getUsersByName(String name);
+
+  // follow a user action
+  FutureEither<void> followUser({required UserModel user});
+
+  // followed by current user action
+  FutureEither<void> followingUser({required UserModel currentUser});
 }
 
 class UserAPI implements IUserAPI {
@@ -70,9 +76,43 @@ class UserAPI implements IUserAPI {
     final userByName = await database.listDocuments(
         databaseId: AppWriteConstants.projectDatabaseId,
         collectionId: AppWriteConstants.userCollectionId,
-    queries: [
-      Query.search('name', name),
-    ]);
+        queries: [
+          Query.search('name', name),
+        ]);
     return userByName.documents;
+  }
+
+  @override
+  FutureEither<void> followUser({required UserModel user}) async {
+    try {
+      final uid = user.uid;
+      await database.updateDocument(
+          databaseId: AppWriteConstants.projectDatabaseId,
+          collectionId: AppWriteConstants.userCollectionId,
+          documentId: uid,
+          data: user.toMap());
+      return right(null);
+    } on AppwriteException catch (e, st) {
+      return left(Failure(message: e.message.toString(), stackTrace: st));
+    } catch (e, st) {
+      return left(Failure(message: e.toString(), stackTrace: st));
+    }
+  }
+
+  @override
+  FutureEither<void> followingUser({required UserModel currentUser}) async {
+    try {
+      final uid = currentUser.uid;
+      await database.updateDocument(
+          databaseId: AppWriteConstants.projectDatabaseId,
+          collectionId: AppWriteConstants.userCollectionId,
+          documentId: uid,
+          data: currentUser.toMap());
+      return right(null);
+    } on AppwriteException catch (e, st) {
+      return left(Failure(message: e.message.toString(), stackTrace: st));
+    } catch (e, st) {
+      return left(Failure(message: e.toString(), stackTrace: st));
+    }
   }
 }

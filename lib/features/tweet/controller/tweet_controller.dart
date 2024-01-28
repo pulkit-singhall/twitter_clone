@@ -6,42 +6,38 @@ import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
 import 'package:twitter_clone/models/tweet_model.dart';
 
 // global tweet controller provider
-final tweetControllerProvider = StateNotifierProvider<TweetController, bool>((ref) {
+final tweetControllerProvider =
+    StateNotifierProvider<TweetController, bool>((ref) {
   final tweetApi = ref.watch(tweetApiProvider);
   return TweetController(ref: ref, tweetApi: tweetApi);
 });
 
-// future provider for tweets list
+// future provider for feed page tweets list
 final tweetListFutureProvider = FutureProvider((ref) {
   final tweetController = ref.watch(tweetControllerProvider.notifier);
   return tweetController.getTweets();
 });
 
-// future provider for user only tweets
-final userTweetsModelListProvider = FutureProvider.family((ref, String uid) {
-  final tweetController = ref.watch(tweetControllerProvider.notifier);
-  return tweetController.getUserTweets(uid);
-});
-
 class TweetController extends StateNotifier<bool> {
   final Ref ref;
-  final TweetApi tweetApi;
+  final TweetAPI tweetApi;
   TweetController({required this.ref, required this.tweetApi}) : super(false);
 
   // getting tweets list
   Future<List<TweetModel>> getTweets() async {
     List<TweetModel> tweets = [];
     final tweetDocumentList = await tweetApi.getTweets();
-    for(var tweet in tweetDocumentList){
+    for (var tweet in tweetDocumentList) {
       tweets.add(TweetModel.fromMap(tweet.data));
     }
     return tweets;
   }
 
   // tweet share/store action
-  void shareTweet({required String tweetText, required BuildContext context}) async {
-    List<String> links = _getLinksFromTweet(tweetText);
-    List<String> hashTags = _getHashTagsFromTweet(tweetText);
+  Future<void> shareTweet(
+      {required String tweetText, required BuildContext context}) async {
+    List<String> links = _getLinksFromTweet(tweetText: tweetText);
+    List<String> hashTags = _getHashTagsFromTweet(tweetText: tweetText);
     final userInstance = ref.watch(userInstanceProvider).value!;
     final String userId = userInstance.$id;
     TweetModel tweetModel = TweetModel(
@@ -66,7 +62,7 @@ class TweetController extends StateNotifier<bool> {
   }
 
   // getting hashtags from the tweet
-  List<String> _getHashTagsFromTweet(String tweetText) {
+  List<String> _getHashTagsFromTweet({required String tweetText}) {
     List<String> hashTags = [];
     List<String> words = tweetText.split(' ');
 
@@ -79,7 +75,7 @@ class TweetController extends StateNotifier<bool> {
   }
 
   // getting links from the tweet
-  List<String> _getLinksFromTweet(String tweetText) {
+  List<String> _getLinksFromTweet({required String tweetText}) {
     List<String> words = tweetText.split(' ');
     List<String> links = [];
     for (String word in words) {
@@ -88,15 +84,5 @@ class TweetController extends StateNotifier<bool> {
       }
     }
     return links;
-  }
-
-  // get user only tweets
-  Future<List<TweetModel>> getUserTweets(String uid) async {
-      final List<TweetModel> userTweetList = [];
-      final userTweets = await tweetApi.getUserTweets(uid);
-      for(var tweets in userTweets){
-        userTweetList.add(TweetModel.fromMap(tweets.data));
-      }
-      return userTweetList;
   }
 }

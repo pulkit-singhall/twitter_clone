@@ -9,7 +9,7 @@ import 'package:appwrite/models.dart' as model;
 // global tweet api provider
 final tweetApiProvider = Provider((ref) {
   final appwriteDatabase = ref.watch(appWriteDatabaseProvider);
-  return TweetApi(database: appwriteDatabase);
+  return TweetAPI(database: appwriteDatabase);
 });
 
 abstract class ITweetAPI {
@@ -20,12 +20,12 @@ abstract class ITweetAPI {
   Future<List<model.Document>> getTweets();
 
   // get user only tweets
-  Future<List<model.Document>> getUserTweets(String uid);
+  Future<List<model.Document>> getUserTweets({required String uid});
 }
 
-class TweetApi implements ITweetAPI {
+class TweetAPI implements ITweetAPI {
   final Databases database;
-  TweetApi({required this.database});
+  TweetAPI({required this.database});
 
   @override
   FutureEither<void> shareTweet({required TweetModel tweetModel}) async {
@@ -52,7 +52,7 @@ class TweetApi implements ITweetAPI {
   }
 
   @override
-  Future<List<model.Document>> getUserTweets(String uid) async {
+  Future<List<model.Document>> getUserTweets({required String uid}) async {
     final userTweetList = await database.listDocuments(
         databaseId: AppWriteConstants.projectDatabaseId,
         collectionId: AppWriteConstants.tweetCollectionId,
