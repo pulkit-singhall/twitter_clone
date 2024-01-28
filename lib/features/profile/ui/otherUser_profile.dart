@@ -48,7 +48,10 @@ class _OtherUserProfileState extends ConsumerState<OtherUserProfile> {
                         const Spacer(),
                         ElevatedButton(
                           onPressed: () {
-                            // edit user profile
+                            // follow / unfollow action
+                            setState(() {
+                              profileController.followUser(user: widget.user, currentUser: currentUserModel);
+                            });
                           },
                           style: ButtonStyle(
                             minimumSize: MaterialStateProperty.all<Size>(
@@ -62,7 +65,9 @@ class _OtherUserProfileState extends ConsumerState<OtherUserProfile> {
                                         color: Pallete.greyColor, width: 2))),
                           ),
                           child: Text(
-                            profileController.buttonText(currentUser: currentUserModel!, user: widget.user),
+                            profileController.buttonText(
+                                currentUser: currentUserModel!,
+                                user: widget.user),
                             style: const TextStyle(
                                 color: Pallete.whiteColor,
                                 fontSize: 20,
