@@ -66,6 +66,7 @@ class ProfileController extends StateNotifier<bool> {
     });
   }
 
+  // follow / following / edit profile button text on profile page
   String buttonText({required UserModel currentUser, required UserModel user}){
     final currentUserId = currentUser.uid;
     final userId = user.uid;

@@ -1,3 +1,4 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,7 +47,7 @@ class TweetController extends StateNotifier<bool> {
         hashtags: hashTags,
         links: links,
         userId: userId,
-        tweetId: '',
+        tweetId: ID.unique(),
         tweetTime: DateTime.now(),
         text: tweetText,
         reshareCount: 0);

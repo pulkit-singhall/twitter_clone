@@ -58,6 +58,7 @@ class TweetModel {
     result.addAll({'likes': likes});
     result.addAll({'comments': comments});
     result.addAll({'reshareCount': reshareCount});
+    result.addAll({'tweetId' : tweetId});
 
     return result;
   }

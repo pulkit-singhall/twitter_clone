@@ -21,6 +21,9 @@ abstract class ITweetAPI {
 
   // get user only tweets
   Future<List<model.Document>> getUserTweets({required String uid});
+
+  // like / unlike a tweet action
+  FutureEither<void> likeTweet({required TweetModel tweet});
 }
 
 class TweetAPI implements ITweetAPI {
@@ -33,7 +36,7 @@ class TweetAPI implements ITweetAPI {
       await database.createDocument(
           databaseId: AppWriteConstants.projectDatabaseId,
           collectionId: AppWriteConstants.tweetCollectionId,
-          documentId: ID.unique(),
+          documentId: tweetModel.tweetId,
           data: tweetModel.toMap());
       return right(null);
     } on AppwriteException catch (e, st) {
@@ -60,5 +63,21 @@ class TweetAPI implements ITweetAPI {
           Query.search('userId', uid),
         ]);
     return userTweetList.documents;
+  }
+
+  @override
+  FutureEither<void> likeTweet({required TweetModel tweet}) async {
+    try {
+      final likeAction = await database.updateDocument(
+          databaseId: AppWriteConstants.projectDatabaseId,
+          collectionId: AppWriteConstants.tweetCollectionId,
+          documentId: tweet.tweetId,
+          data: tweet.toMap());
+      return right(null);
+    } on AppwriteException catch (e, st) {
+      return left(Failure(message: e.message.toString(), stackTrace: st));
+    } catch (e, st) {
+      return left(Failure(message: e.toString(), stackTrace: st));
+    }
   }
 }
