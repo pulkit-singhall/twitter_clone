@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_clone/apis/tweet_api.dart';
 import 'package:twitter_clone/apis/user_api.dart';

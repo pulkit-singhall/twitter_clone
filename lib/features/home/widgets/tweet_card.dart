@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:twitter_clone/common/common.dart';
 import 'package:twitter_clone/constants/assets_constants.dart';
 import 'package:twitter_clone/features/auth/controller/auth_controller.dart';
@@ -19,6 +20,8 @@ class TweetCard extends ConsumerStatefulWidget {
 }
 
 class _TweetCardState extends ConsumerState<TweetCard> {
+  int isLicked = 0;
+
   @override
   Widget build(BuildContext context) {
     final String text = widget.tweet.text;
@@ -79,7 +82,7 @@ class _TweetCardState extends ConsumerState<TweetCard> {
               height: 25,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 TweetActionButton(
                   number: commentNumber.toString(),
@@ -91,10 +94,39 @@ class _TweetCardState extends ConsumerState<TweetCard> {
                   path: AssetsConstants.retweetIcon,
                   onTap: () {},
                 ),
-                TweetActionButton(
-                  number: likeNumber.toString(),
-                  path: AssetsConstants.likeOutlinedIcon,
-                  onTap: () {},
+                GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      isLicked = 1 - isLicked;
+                      // print('clicked');
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        child: isLicked == 0 ? SvgPicture.asset(
+                          AssetsConstants.likeOutlinedIcon,
+                          height: 25,
+                          width: 25,
+                          color: Pallete.greyColor,
+                        ) : SvgPicture.asset(
+                          AssetsConstants.likeFilledIcon,
+                          height: 25,
+                          width: 25,
+                          color: Pallete.redColor,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        likeNumber.toString(),
+                        style: const TextStyle(
+                            fontSize: 18, color: Pallete.greyColor),
+                      ),
+                    ],
+                  ),
                 ),
                 const BottomItem(
                     height: 25,
